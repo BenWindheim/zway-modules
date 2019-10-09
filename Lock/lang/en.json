@@ -1,0 +1,8 @@
+{
+	"m_title":"Lock Test",
+	"m_descr":"Removing code piece by piece to end up with simple Lock",
+	"l_dw_sensor":"Door/Window Sensor",
+	"l_doorlock":"Door Lock",
+	"l_delay_sec":"Delay in seconds",
+	"rl_doNotSendCommand":"Don't send Lock command if doorlock already closed"
+}
