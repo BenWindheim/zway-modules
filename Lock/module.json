@@ -1,0 +1,62 @@
+{
+	"dependencies": [],
+	"singleton": false,
+	"category": "device_enhancements",
+	"author": "Z-Wave.Me",
+	"homepage": "http://razberry.z-wave.me",
+	"icon": "icon.png",
+	"moduleName": "Lock",
+	"version": "1.2",
+	"maturity": "stable",
+	"repository": {
+		"type": "git",
+		"source": "https://github.com/Z-Wave-Me/home-automation"
+	},
+	"defaults": {
+		"title": "__m_title__",
+		"description": "__m_descr__",
+		"DoorLock": null,
+		"delay": 5,
+		"doNotSendCommand": false
+	},
+	"schema": {
+		"type": "object",
+		"properties": {
+			"DoorLock": {
+				"field": "enum",
+				"datasource": "namespaces",
+				"enum": "namespaces:devices_doorlock:deviceId,namespaces:devices_switchBinary:deviceId",
+				"required": true
+			},
+			"delay": {
+				"type": "integer",
+				"minimum": 1,
+				"required": true
+			},
+			"doNotSendCommand": {
+				"type": "boolean",
+				"required": true
+			}
+		},
+		"required": true
+	},
+	"options": {
+		"fields": {
+			"DoorLock": {
+				"label": "__l_doorlock__",
+				"type": "select",
+				"datasource": "namespaces",
+				"field": "optionLabels",
+				"optionLabels": "namespaces:devices_doorlock:deviceName"
+			},
+			"delay": {
+				"label": "__l_delay_sec__",
+				"type": "integer"
+			},
+			"doNotSendCommand": {
+				"type": "checkbox",
+				"rightLabel": "__rl_doNotSendCommand__"
+			}
+		}
+	}
+}
