@@ -13,9 +13,9 @@
 // --- Class definition, inheritance and setup
 // ----------------------------------------------------------------------------
 function Lock (id, controller) {
+	console.log("[DIY] BEGIN");
 	// Call superconstructor first (AutomationModule)
 	Lock.super_.call(this, id, controller);
-
 	// Create instance variables
 	this.timer = null;
 };
@@ -33,40 +33,50 @@ Lock.prototype.init = function (config) {
 	var self = this;
 	
 	// handler - it is a name of your function
-	this.handler = function (vDev) {	
-		console.log('Begin handler:'+doorLockState);
+	this.handler = function (vDev) {
+		console.log("[DIY] In the handler");
 		// Clear delay if door opened
 		clearTimeout(self.timer);
 		var doorLockState = vDev.get("metrics:level");
-		if (doorLockState == "close") {
-			self.controller.devices.get(self.config.DoorLock).performCommand("open");
-			//self.log('Closed to open:'+doorLockState);
+		console.log("[DIY] Handler called with Door Lock State: " + doorLockState);
+
+	/*	if (doorLockState == "close") {
+			vDev.set("open");
+			doorLockState = vDev.get("metrics:level");
+			console.log("[DIY] Closed to open: " + doorLockState);
 		} else if (doorLockState == "open") {
-			self.controller.devices.get(self.config.DoorLock).performCommand("close");
-			//self.log('Open to closed:'+doorLockState);
-		}
+			vDev.set("close");	
+			doorLockState = vDev.get("metrics:level");
+			console.log("[DIY] Open to closed: " + doorLockState);
+		}*/
 		// Close lock if sensor false
 		// Start Timer
 		self.timer = setInterval(function () {		
-			//self.log('SetInterval');
+			console.log("DIY] SetInterval");
 			doorLockState = vDev.get("metrics:level");
+			console.log("[DIY] Check door lock state: " + doorLockState);
 			var doorLockDeviceType = vDev.get("deviceType");
+			console.log("[DIY] doorLockDeviceType: " + doorLockDeviceType);
 
 			// Check lock, if already closed don't send command
-			if (!(self.config.doNotSendCommand && (doorLockState == "close" || doorLockState == "on"))) {
-				// Close lock 
-				if (doorLockDeviceType == "doorlock") {
-					if (doorLockState == "open") {
-						self.controller.devices.get(self.config.DoorLock).performCommand("close");
-					}
-					else if (doorLockState == "close") {
-						self.controller.devices.get(self.config.DoorLock).performCommand("open");
-					}
+		
+			// Close lock 
+			if (doorLockDeviceType == "doorlock") {
+				if (doorLockState == "open") {
+					console.log("[DIY] Setting to close");
+					vDev.set("metrics:level:0");
 				}
-				if (doorLockDeviceType == "switchBinary") {
-					self.controller.devices.get(self.config.DoorLock).performCommand("on");	
+				else if (doorLockState == "close") {
+					console.log("[DIY] Setting to open");
+					vDev.set("metrics:level:255");
 				}
 			}
+			if (doorLockDeviceType == "switchBinary") {
+				console.log("[DIY] Binary!!!");
+				self.controller.devices.get(self.config.DoorLock).performCommand("on");	
+				self.controller.devices.get(self.config.DoorLock).performCommand("off");	
+			}
+			
 			// And clearing out this.timer variable
 			//self.timer = null;
 		}, self.config.delay*1000);
@@ -77,10 +87,11 @@ Lock.prototype.init = function (config) {
 };
 
 Lock.prototype.stop = function () {
+	console.log("[DIY] Stop function");
 	Lock.super_.prototype.stop.call(this);
 
-	if (this.timer)
-		clearTimeout(this.timer);
-
+	if (this.timer) {
+		clearInterval(this.timer);
+	}
 	this.controller.devices.off(this.config.DoorLock, 'change:metrics:level', this.handler);
 };
