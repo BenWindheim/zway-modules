@@ -1,0 +1,53 @@
+{
+	"dependencies": [],
+	"singleton": false,
+	"category": "device_enhancements",
+	"author": "Z-Wave.Me",
+	"homepage": "http://razberry.z-wave.me",
+	"icon": "icon.png",
+	"moduleName": "SetUserCode",
+	"version": "1.2",
+	"maturity": "stable",
+	"repository": {
+		"type": "git",
+		"source": "https://github.com/Z-Wave-Me/home-automation"
+	},
+	"defaults": {
+		"title": "__m_title__",
+		"description": "__m_descr__",
+		"DoorLock": null,
+		"code": 1234
+	},
+	"schema": {
+		"type": "object",
+		"properties": {
+			"DoorLock": {
+				"field": "enum",
+				"datasource": "namespaces",
+				"enum": "namespaces:devices_doorlock:deviceId,namespaces:devices_switchBinary:deviceId",
+				"required": true
+			},
+			"code": {
+				"type": "integer",
+				"minimum": 1,
+				"required": true
+			}
+		},
+		"required": true
+	},
+	"options": {
+		"fields": {
+			"DoorLock": {
+				"label": "__l_doorlock__",
+				"type": "select",
+				"datasource": "namespaces",
+				"field": "optionLabels",
+				"optionLabels": "namespaces:devices_doorlock:deviceName"
+			},
+			"code": {
+				"label": "__l_code__",
+				"type": "integer"
+			}
+		}
+	}
+}
