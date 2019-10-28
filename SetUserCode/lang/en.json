@@ -1,0 +1,6 @@
+{
+	"m_title":"Set User Code",
+	"m_descr":"Set a code for a user for a specified door lock to use different than the master code",
+	"l_doorlock":"Door Lock",
+	"l_code":"Code to set: 4-8 digits"
+}
